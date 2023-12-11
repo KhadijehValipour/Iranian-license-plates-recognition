@@ -62,3 +62,13 @@ clone the DTRB repository, We run the demo.py file that was previously taught fo
 
 ### results
 
+|  Image name   | 00005.jpg |  00008.jpg |   01290.jpg  |  01666.jpg  |  01309.jpg  | 01310.jpg |
+| :-----: | :-----: | :-----:  | :-----: | :-----: | :-----: |:-----:  |
+| Image |   ![Alt text](output/00005.jpg)   |  ![Alt text](output/00008.jpg)    |  ![Alt text](output/01290.jpg)   |   ![Alt text](output/01666.jpg)     |  ![Alt text](output/01309.jpg)     |    ![Alt text](output/01310.jpg)  |
+| Recognized text from image |   95t38633    |  44h67355    |  42t7711   |    73i34174    |    27t54314   |    37t58922   |
+| Letters | ت  |   ه |      ت |  ی  |   ت  |   ت |
+
+
+-------
+
+
