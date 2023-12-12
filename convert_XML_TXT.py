@@ -1,136 +1,93 @@
-import xml.sax
 import xml.etree.ElementTree as ET
 import os
-import glob
 
-final_list = []
-class XMLHandler(xml.sax.ContentHandler):
-    def __init__(self):
-        self.counter = 0
-        self.CurrentData = ""
-        self.name = ""
-        self.list = []
+def is_latin_char(character):
+    return character.isalpha() and ord(character) < 128
 
-   # Call when an element starts
-    def startElement(self, tag, attributes):
-        self.CurrentData = tag
+def is_latin_numeral(character):
+    return character.isdigit() and ord(character) < 128
 
+dataclass = ['test']
+dictionary = {
+        'B': 'ب',
+        'P': 'پ',
+        'T': 'ت',
+        'Y': 'ث',
+        'Z': 'ز',
+        'X': 'ش',
+        'E': 'ع',
+        'F': 'ف',
+        'K': 'ک',
+        'G': 'گ',
+        'D': 'D',
+        'S': 'S',
+        'J': 'ج',
+        'W': 'د',
+        'C': 'س',
+        'U': 'ص',
+        'R': 'ط',
+        'Q': 'ق',
+        'L': 'ل',
+        'M': 'م',
+        'N': 'ن',
+        'V': 'و',
+        'H': 'ه',
+        'I': 'ی',
+        '0': '۰',
+        '1': '۱',
+        '2': '۲',
+        '3': '۳',
+        '4': '۴',
+        '5': '۵',
+        '6': '۶',
+        '7': '۷',
+        '8': '۸',
+        '9': '۹',
 
-
-   # Call when an elements ends
-    def endElement(self, tag):
-        
-        
-        if(self.CurrentData == "name"):
-            #print("name:", self.name)
-            self.counter+=1
-            self.list.append(self.name)
-            if self.counter == 8 :
-                print("self.list" ,self.list)
-
-                if self.list[2] == "الف":
-                    self.list[2] = "A"
-                elif self.list[2] == "ب":
-                    self.list[2] = "B"
-                elif self.list[2] == "پ":
-                    self.list[2] = "P"
-                elif self.list[2] == "ت":
-                    self.list[2] = "T"
-                elif self.list[2] == "ث":
-                    self.list[2] = "Y"
-                elif self.list[2] == "ز":
-                    self.list[2] = "Z"
-                elif self.list[2] == "ش":
-                    self.list[2] = "X"
-                elif self.list[2] == "ع":
-                    self.list[2] = "E"
-                elif self.list[2] == "ف":
-                    self.list[2] = "F"
-                elif self.list[2] == "ک":
-                    self.list[2] = "K"
-                elif self.list[2] == "گ":
-                    self.list[2] = "G"
-                elif self.list[2] == "D":
-                    self.list[2] = "D"
-                elif self.list[2] == "S":
-                    self.list[2] = "S"
-                elif self.list[2] == "ج":
-                    self.list[2] = "J"
-                elif self.list[2] == "د":
-                    self.list[2] = "W"
-                elif self.list[2] == "س":
-                    self.list[2] = "C"
-                elif self.list[2] == "ص":
-                    self.list[2] = "U"
-                elif self.list[2] == "ط":
-                    self.list[2] = "R"
-                elif self.list[2] == "ق":
-                    self.list[2] = "Q"
-                elif self.list[2] == "ل":
-                    self.list[2] = "L"
-                elif self.list[2] == "م":
-                    self.list[2] = "M"
-                elif self.list[2] == "ن":
-                    self.list[2] = "N"
-                elif self.list[2] == "و":
-                    self.list[2] = "V"
-                elif self.list[2] == "‍":
-                    self.list[2] = "H"
-                elif self.list[2] == "ه‍":
-                    self.list[2] = "H"
-                elif self.list[2] == "ی":
-                    self.list[2] = "I"
-                elif self.list[2] == "ژ (معلولین و جانبازان)":
-                    self.list[2] = "@"
-
-                  
-                my_list = [''.join(self.list[0 : 8])]
-                print(my_list[0])
-                final_list.append(my_list[0])
-   # Call when a character is read
-    def characters(self, content):
-        if(self.CurrentData == "name"):
-            self.name = content
-
-count= 0
-path = 'validation'
-for filename in os.listdir(path):
-    if filename.endswith('.xml'): 
-        fullname = os.path.join(path, filename)
-        tree = ET.parse(fullname)
-        # create an XMLReader
-        parser = xml.sax.make_parser()
-
-        # turn off namepsaces
-        parser.setFeature(xml.sax.handler.feature_namespaces, 0)
-
-        # override the default ContextHandler
-        Handler = XMLHandler()
-        parser.setContentHandler( Handler )
-        parser.parse(fullname)
-        count+=1
-        #print(count)
-
-print(final_list)
-print(len(final_list))
-
-file_names = []
-file_names = glob.glob("validation/*.jpg")
-for i in range(len(file_names)):
-    file_names[i]=file_names[i].replace("\\" , "/")
-
-print(len(file_names))
-
-
-
-with open("gt_validation.txt", "w", encoding="utf-8") as f:
-    for i in range(len(file_names)):
-        f.write(file_names[i]+"	"+final_list[i]+"\n")
-
-
-
-
-
-
-
-
+}
+Move = {
+        'A': 'الف',
+        '@': 'ویلچر',
+    }
+for i in dataclass:
+    output_file_path = f'gt_{i}.txt'
+    f = open(output_file_path, 'w')
+    for file in os.listdir(f'{i}/'):
+        # print(files)
+        # for file in files:
+        error_file = ''
+        if file.endswith('.xml'):
+            error_file = file
+            # Parse the XML file
+            tree = ET.parse(f'{i}/{file}')
+            root = tree.getroot()
+            # Access elements in the XML tree
+            filename = root.find('filename').text
+            print(f'Filename: {file}')
+            name = ''
+            new_name=''
+            # Iterate through object elements
+            for obj in root.findall('object'):
+                name += obj.find('name').text
+            # print(name)
+            for key in Move:
+                if name.find(Move[key]) != -1:
+                    new_name=name.replace(Move[key], key)
+                    name = ''
+                    name = new_name
+            new_name=''
+            for index, v in enumerate(name):
+                if is_latin_char(v)==False and is_latin_numeral(v) == False:
+                    for key in dictionary:
+                        if dictionary[key] == v:
+                            new_name=name.replace(name[index], key)
+                            name = ''
+                            name = new_name
+            # try:
+            for g in name:
+                if is_latin_char(g)==False and is_latin_numeral(g) == False and g != '@':
+                    name = name.replace(g, "")
+                # print(is_latin_char(g), is_latin_numeral(g))
+            filejpg = file.split('.')
+            filesave = filejpg[0] + ".jpg"
+            f.write(f'{filesave}	{name}\n')
